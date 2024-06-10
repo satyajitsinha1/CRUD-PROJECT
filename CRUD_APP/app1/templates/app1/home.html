@@ -1,0 +1,49 @@
+{% extends "app1/base.html" %}
+
+{% block content %}
+
+  <div class=" container mt-4 col-sm-4">
+  <h1>Student Register Form</h1>
+<br><br>
+{{form.non_field_errors}}
+<form action="" method="post" novalidate>
+  {% csrf_token %}
+    {% for field in form %}
+    <div class="form-floating mb-3">
+    {{field}} {{field.label_tag}} <span class="">{{field.errors|striptags}}</span>
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-success">Register</button>
+</form>
+</div>
+<br><hr>
+<div class=" container col-sm-7">
+  <table class="table table-light table-hover">
+    <thead>
+      <tr>
+        <th scope="col">ROLL NO</th>
+        <th scope="col">NAME</th>
+        <th scope="col">EMAIL ID</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for student in students %}
+      <tr>
+        <th scope="row">{{student.roll}}</th>
+        <td scope="row">{{student.name}}</td>
+        <td scope="row">{{student.email}}</td>
+        <td scope="row">
+            <a href="{% url 'update' student.roll %}"><button type="submit" class="btn btn-warning">Update</button></a>
+            <form class="d-inline" action="{% url 'delete' student.roll %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </td>
+        {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+{% endblock content %}
